@@ -21,7 +21,7 @@ package org.namelessrom.hardware;
 
 import android.os.FileObserver;
 
-/*
+/**
  * Smart Cover HAL
  *
  * For devices which have a sysfs interface for watching smart cover changes
@@ -31,11 +31,42 @@ public class SmartCoverHW {
 
     private static final String SMART_COVER_PATH = "";
 
-    /*
+    /** The mask is usually specified at include/linux/input.h */
+    public static final int SW_MASK = 0x00;
+    public static final int SW_BIT = 1 << SW_MASK;
+
+    public static final int LID_OPEN = 0;
+
+    /**
      * All HAF classes should export this boolean.
      * Real implementations must, of course, return true
      */
     public static boolean isSupported() { return false; }
+
+    /**
+     * @return Whether a file observer should be used to
+     *         detect smartcover changes
+     */
+    public static boolean isMonitorable() { return false; }
+
+    /**
+     * @return Wheter we support detection via mask and / or bit
+     */
+    public static boolean isMaskable() { return false; }
+
+    /**
+     * @return Wheter the lid is closed
+     */
+    public static boolean isLidClosed(final int state) {
+        return (state > LID_OPEN);
+    }
+
+    /**
+     * @return Wheter the lid is open
+     */
+    public static boolean isLidOpen(final int state) {
+        return (state == LID_OPEN);
+    }
 
     /**
      * @return The path to the sysfs file
@@ -45,5 +76,5 @@ public class SmartCoverHW {
     /**
      * @return Whether the Smart Cover is open
      */
-    public static boolean isOpen() { return false; }
+    public static boolean isPathOpen() { return false; }
 }
